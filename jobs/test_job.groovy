@@ -18,7 +18,7 @@ job_list.each { x, y ->
       //label('some_node_label')
       steps {
         batchFile {
-          command('echo cos tam')
+          command('echo cos tam' + z[1])
         }
       }
     }
