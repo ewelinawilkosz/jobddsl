@@ -3,7 +3,7 @@ def job_list = ['releaseA': [['jobA', 'labelA'], ['jobB', 'labelB']],
 
 // in each iteration x and y will contain an element from job_list 
 // e.g. in first iteration x = 'releaseA' and y = [['jobA', 'labelA'], ['jobB', 'labelB']]
-job_list.each { x, y ->¨
+job_list.each { x, y ->
   print y
 // here we iterate through y, and in each iteration we take one element from y ([['jobA', 'labelA'], ['jobB', 'labelB']])
 // and call it 'z', so in the first iteration z = ['jobA', 'labelA']
