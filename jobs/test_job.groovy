@@ -7,7 +7,7 @@ job_list.each { x, y ->
   print y
 // here we iterate through y, and in each iteration we take one element from y ([['jobA', 'labelA'], ['jobB', 'labelB']])
 // and call it 'z', so in the first iteration z = ['jobA', 'labelA']
-  y.each { -> z
+  y.each { z ->
     job(z[0]) {
       description('this job does almost nothing, just a test')
       logRotator(30, 15, -1, -1)
