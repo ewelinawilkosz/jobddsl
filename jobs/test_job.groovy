@@ -1,5 +1,5 @@
 def job_list = ['releaseA': [['jobA', 'labelA'], ['jobB', 'labelB']],
-                'releaseB': [['jobC', 'labelC'], ['jobD', 'labelD'], ['jobE', 'labelE']]
+                'releaseB': [['jobC', 'labelC'], ['jobD', 'labelD'], ['jobE', 'labelE']]]
 
 // in each iteration x and y will contain an element from job_list 
 // e.g. in first iteration x = 'releaseA' and y = [['jobA', 'labelA'], ['jobB', 'labelB']]
