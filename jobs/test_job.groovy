@@ -18,7 +18,7 @@ job_list.each { x, y ->
       //label('some_node_label')
       steps {
         batchFile {
-          command('echo cos tam' + z[1])
+          command('cd c:\\CTT_AUTOMATIC\\bt\\test\\vb\\log__%RELEASE%_XYZ\\ ' + z[1])
         }
       }
     }
