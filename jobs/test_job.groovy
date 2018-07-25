@@ -27,7 +27,7 @@ job_list.each { x, y ->
         batchFile {
           command('cd c:\\CTT_AUTOMATIC\\bt\\test\\vb\\log__%RELEASE%_XYZ\\\n' +
                   conditional_line +
-                  'cd c:\\costam\\bt\\test\\vb\')
+                  'cd c:\\costam\\bt\\test\\vb\\')
         }
       }
     }
