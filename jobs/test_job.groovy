@@ -41,6 +41,7 @@ job_list.each { x, y ->
 }
 
 job('run_release') {
+  description('trigger all jobs')
   publishers {
         downstreamParameterized {
           trigger(downstream_trigger.join(", ")) {
