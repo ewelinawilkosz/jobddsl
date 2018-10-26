@@ -3,6 +3,7 @@ def job_list = ['releaseA': [['jobA', 'labelA'], ['jobB', 'labelB']],
 // in each iteration x and y will contain an element from job_list 
 // e.g. in first iteration x = 'releaseA' and y = [['jobA', 'labelA'], ['jobB', 'labelB']]
 
+def downstream_trigger = []
 def conditional_line = ''
 job_list.each { x, y ->
   print y
@@ -15,6 +16,7 @@ job_list.each { x, y ->
 // here we iterate through y, and in each iteration we take one element from y ([['jobA', 'labelA'], ['jobB', 'labelB']])
 // and call it 'z', so in the first iteration z = ['jobA', 'labelA']
   y.each { z ->
+    downstream_trigger.add(z[0])
     job(z[0]) {
       description('this job does almost nothing, just a test')
       logRotator(30, 15, -1, -1)
@@ -30,9 +32,23 @@ job_list.each { x, y ->
 //                  'cd c:\\costam\\bt\\test\\vb\\')
 //        }
         shell {
+          command('echo $RELEASE')
           command('echo ' + conditional_line)
         } 
       }
     }
   }
+}
+
+job('run_release') {
+  publishers {
+        downstreamParameterized {
+          trigger(downstream_trigger.join(", ")) {
+            condition('SUCCESS')
+            parameters {
+              currentBuild()
+            }
+          }
+        }
+      }
 }
