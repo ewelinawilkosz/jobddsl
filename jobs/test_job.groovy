@@ -24,11 +24,14 @@ job_list.each { x, y ->
       }
       //label('some_node_label')
       steps {
-        batchFile {
-          command('cd c:\\CTT_AUTOMATIC\\bt\\test\\vb\\log__%RELEASE%_XYZ\\\n' +
-                  conditional_line +
-                  'cd c:\\costam\\bt\\test\\vb\\')
-        }
+//        batchFile {
+//          command('cd c:\\CTT_AUTOMATIC\\bt\\test\\vb\\log__%RELEASE%_XYZ\\\n' +
+//                  conditional_line +
+//                  'cd c:\\costam\\bt\\test\\vb\\')
+//        }
+        shell {
+          command('echo ' + conditional_line)
+        } 
       }
     }
   }
