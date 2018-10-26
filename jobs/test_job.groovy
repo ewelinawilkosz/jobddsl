@@ -18,7 +18,7 @@ job_list.each { x, y ->
     job(z[0]) {
       description('this job does almost nothing, just a test')
       logRotator(30, 15, -1, -1)
-      label(z[1])
+      //label(z[1])
       parameters {
         stringParam('RELEASE', x, 'Release number')
       }
