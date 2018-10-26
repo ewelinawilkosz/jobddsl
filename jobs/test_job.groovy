@@ -42,7 +42,7 @@ job_list.each { x, y ->
   }
 }
 
-job('run_release') {
+job('run_regression') {
   description('trigger all jobs')
   publishers {
         downstreamParameterized {
@@ -53,3 +53,20 @@ job('run_release') {
         }
       }
 }
+
+buildPipelineView('Regression') {
+      configure { view ->
+        view / buildCard(class: 'au.com.centrumsystems.hudson.plugin.buildpipeline.extension.StandardBuildCard')
+        view / columnHeaders(class: 'au.com.centrumsystems.hudson.plugin.buildpipeline.extension.NullColumnHeader')
+        view / rowHeaders(class: 'au.com.centrumsystems.hudson.plugin.buildpipeline.extension.SimpleRowHeader')
+      }
+      filterBuildQueue()
+      filterExecutors()
+      title('Regression pipeline')
+      displayedBuilds(15)
+      selectedJob('run_regression')
+      alwaysAllowManualTrigger()
+      showPipelineParameters()
+      refreshFrequency(60)
+}
+  
