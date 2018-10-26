@@ -46,9 +46,7 @@ job('run_release') {
         downstreamParameterized {
           trigger(downstream_trigger.join(", ")) {
             condition('SUCCESS')
-            parameters {
-              currentBuild()
-            }
+            triggerWithNoParameters()
           }
         }
       }
