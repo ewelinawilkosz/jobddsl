@@ -33,6 +33,8 @@ job_list.each { x, y ->
 //        }
         shell {
           command('echo $RELEASE')
+        }
+        shell {
           command('echo ' + conditional_line)
         } 
       }
