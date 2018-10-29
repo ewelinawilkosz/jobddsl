@@ -1,28 +1,23 @@
-def job_list = ['releaseA': [['jobA', 'labelA'], ['jobB', 'labelB']],
-                'releaseB': [['jobC', 'labelC'], ['jobD', 'labelD'], ['jobE', 'labelE']]]
+def releases = ['10.50.11', '10.55.12', '11.50.20']
+
+def jobs_1 = [['job1', 'param1'], ['job2', 'param2']]
+
+
 // in each iteration x and y will contain an element from job_list 
 // e.g. in first iteration x = 'releaseA' and y = [['jobA', 'labelA'], ['jobB', 'labelB']]
 
-def downstream_trigger = []
-def conditional_line = ''
-job_list.each { x, y ->
-  print y
-  if (x == "releaseA") {
-    conditional_line = "costam A\n"
-  } 
-  if (x == "releaseB") {
-    conditional_line = "costam B\n"
-  }
-// here we iterate through y, and in each iteration we take one element from y ([['jobA', 'labelA'], ['jobB', 'labelB']])
-// and call it 'z', so in the first iteration z = ['jobA', 'labelA']
-  y.each { z ->
-    downstream_trigger.add(z[0])
-    job(z[0]) {
+def downstream_trigger_1 = []
+def downstream_trigger_2 = []
+
+releases.each { release ->  
+  jobs_1.each { j ->
+    downstream_trigger_2.add(j[0])
+    job(j[0]){
       description('this job does almost nothing, just a test')
       logRotator(30, 15, -1, -1)
       //label(z[1])
       parameters {
-        stringParam('RELEASE', x, 'Release number')
+        stringParam('RELEASE', release, 'Release number')
       }
       //label('some_node_label')
       steps {
@@ -34,24 +29,43 @@ job_list.each { x, y ->
         shell {
           command('echo $RELEASE')
         }
-        shell {
-          command('echo ' + conditional_line)
-        } 
       }
     }
   }
+  
+  def release_job_name = "release_" + release
+  downstream_trigger_1.add(release_job_name)
+  
+  job(release_job_name) {
+    description('trigger all jobs for release ' + release)
+    parameters {
+      stringParam('RELEASE', release, 'Release number')
+    }
+    publishers {
+      downstreamParameterized {
+        trigger(downstream_trigger_2.join(", ")) {
+          condition('SUCCESS')
+          parameters {
+            currentBuild()
+          }
+        }
+      }
+    }
+  }
+  
+  downstream_trigger_2 = []
 }
 
 job('run_regression') {
   description('trigger all jobs')
   publishers {
-        downstreamParameterized {
-          trigger(downstream_trigger.join(", ")) {
-            condition('SUCCESS')
-            triggerWithNoParameters()
-          }
-        }
+    downstreamParameterized {
+      trigger(downstream_trigger_1.join(", ")) {
+        condition('SUCCESS')
+        triggerWithNoParameters()
       }
+    }
+  }
 }
 
 buildPipelineView('Regression') {
